@@ -2,6 +2,7 @@ package com.scientts.bctools;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -122,6 +123,8 @@ public class BCTools extends JFrame {
 	
 	protected void createResultPanel() {
 		resultArea = new JTextArea();
+		Font font = new Font("Arial", Font.BOLD, 14);
+		resultArea.setFont(font);
 		
 		JScrollPane scrollPane = new JScrollPane(resultArea);
 		scrollPane.setBorder(BorderFactory.createTitledBorder("Resultado"));

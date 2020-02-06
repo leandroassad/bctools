@@ -28,7 +28,7 @@ public class CheckEventParser extends AbstractCardExpressionsParser {
 		}
 		else {		
 			builder.append("Entrada: " + expressionString)
-			.append('\n');
+			.append("\n\n");
 			char c = expressionString.charAt(0);
 			if (c == '0') builder.append("0 = Ignora Teclas\n");
 			else if (c == '1') builder.append("1 = Verifica Pressionamento de Teclas\n");
@@ -59,7 +59,7 @@ public class CheckEventParser extends AbstractCardExpressionsParser {
 		
 		builder.append(">>>> CheckEvent Output <<<<\n");
 		builder.append("Entrada: " + expressionString)
-		.append('\n');
+		.append("\n\n");
 		char c = expressionString.charAt(0);
 		switch (c) {
 		case '0':

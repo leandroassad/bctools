@@ -49,7 +49,7 @@ public class TabelaParametrosAIDParser extends AbstractCommandParser {
 		else {
 			Matcher m = paramTablePattern.matcher(expressionString);
 			if (m.matches()) {
-				builder.append("Entrada: ").append(expressionString).append('\n');
+				builder.append("Entrada: ").append(expressionString).append("\n\n");
 				builder.append("Tamanho do registro: [").append(m.group(1)).append("]\n");
 				builder.append("Identificação de Tabela de Parâmetros (Deve ser 1): [").append(m.group(2)).append("]\n");
 				builder.append("Identificador da Rede Adquirente: [").append(m.group(3)).append("] - ").append(redeMap.get(m.group(3))).append("\n");
