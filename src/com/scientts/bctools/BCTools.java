@@ -43,7 +43,7 @@ public class BCTools extends JFrame {
 		setLocation(100, 100);
 		setPreferredSize(new Dimension(900, 600));
 		setResizable(true);
-		setTitle("BCTools Versão 1.0.2");
+		setTitle("BCTools Versão 1.0.3");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);   
 		
 		setLayout(new BorderLayout(5,5));

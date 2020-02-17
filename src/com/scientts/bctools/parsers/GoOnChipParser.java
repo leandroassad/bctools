@@ -1,9 +1,18 @@
 package com.scientts.bctools.parsers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.payneteasy.tlv.BerTag;
+import com.payneteasy.tlv.BerTlv;
+import com.payneteasy.tlv.BerTlvParser;
+import com.payneteasy.tlv.BerTlvs;
+import com.payneteasy.tlv.HexUtil;
+import com.scientts.bctools.util.EMVTag;
+import com.scientts.bctools.util.EMVTagUtil;
 
 public class GoOnChipParser extends AbstractCardExpressionsParser {
 
@@ -82,6 +91,22 @@ public class GoOnChipParser extends AbstractCardExpressionsParser {
 			if (nBytes > 0) {
 				nBytes *= 2;
 				builder.append("Bit 55: [").append(m.group(10).substring(0, nBytes)).append("]\n");
+				
+				builder.append("Tags separadas\n");
+				byte[] bytes = HexUtil.parseHex(m.group(10).substring(0, nBytes));
+
+				BerTlvParser parser = new BerTlvParser();
+				BerTlvs tlvs = parser.parse(bytes, 0, bytes.length);
+				List<BerTlv> tlvList = tlvs.getList();
+				EMVTagUtil tagUtil = EMVTagUtil.getInstance();
+				for (BerTlv berTlv : tlvList) {
+					BerTag berTag = berTlv.getTag();
+					String tagStr = HexUtil.toHexString(berTag.bytes);
+					EMVTag tag = tagUtil.getEMVTag(tagStr);
+					String tagName = tag != null? tag.name : "Sem Descrição";
+					builder.append("Tag ").append(tagStr).append(": ").append(tagName).append("\n");
+					builder.append("  Valor: ").append(berTlv.getHexValue()).append("\n");
+				}
 			}
 		}
 		else {
