@@ -31,6 +31,8 @@ import com.scientts.bctools.parsers.TabelaParametrosAIDParser;
 @SuppressWarnings("serial")
 public class BCTools extends JFrame {
 
+	public static final String BCTOOLS_VERSION = "1.0.3";
+	
 	JTextArea resultArea;
 	JTextField commandText;
 	JComboBox<CommandParser> actionBox;
@@ -43,7 +45,7 @@ public class BCTools extends JFrame {
 		setLocation(100, 100);
 		setPreferredSize(new Dimension(900, 600));
 		setResizable(true);
-		setTitle("BCTools Versão 1.0.3");
+		setTitle("BCTools Versão " + BCTOOLS_VERSION);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);   
 		
 		setLayout(new BorderLayout(5,5));
