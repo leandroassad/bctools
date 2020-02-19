@@ -10,15 +10,17 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 
 import com.scientts.bctools.parsers.CheckEventParser;
 import com.scientts.bctools.parsers.CommandParser;
@@ -34,7 +36,7 @@ public class BCTools extends JFrame {
 
 	public static final String BCTOOLS_VERSION = "1.0.4";
 	
-	JTextPane resultArea;
+	JEditorPane resultArea;
 	JTextField commandText;
 	JComboBox<CommandParser> actionBox;
 	
@@ -125,10 +127,22 @@ public class BCTools extends JFrame {
 	}
 	
 	protected void createResultPanel() {
-		resultArea = new JTextPane();
-		resultArea.setContentType("text/html");
-		Font font = new Font("Arial", Font.BOLD, 14);
-		resultArea.setFont(font);
+		resultArea = new JEditorPane();
+		
+		resultArea.setEditable(false);
+
+		// add a HTMLEditorKit to the editor pane
+		HTMLEditorKit kit = new HTMLEditorKit();
+		resultArea.setEditorKit(kit);
+		
+		// add some styles to the html
+		StyleSheet styleSheet = kit.getStyleSheet();
+		styleSheet.addRule("table { font-family: arial, sans-serif; border-collapse: collapse; width: 100%; }");
+		styleSheet.addRule("td, th { border: 1px solid #dddddd; text-align: left; padding: 8px; }");
+		styleSheet.addRule("tr:nth-child(even) { background-color: #dddddd; }");
+		
+		Document doc = kit.createDefaultDocument();
+		resultArea.setDocument(doc);
 		
 		JScrollPane scrollPane = new JScrollPane(resultArea);
 		scrollPane.setBorder(BorderFactory.createTitledBorder("Resultado"));
@@ -141,12 +155,11 @@ public class BCTools extends JFrame {
 	
 	public void parseCommand() {
 		CommandParser parser = (CommandParser)actionBox.getSelectedItem();
-		resultArea.setText(parser.parse(commandText.getText())+ "\n-----------------------------------------------\n");
-//		resultArea.append(parser.parse(commandText.getText()));
-//		resultArea.append("\n");
-//		resultArea.append("-----------------------------------------------\n");
 		if (commandText.getText().trim().length() == 0) {
 			JOptionPane.showMessageDialog(this, "Não há dados de entrada");
+		}
+		else {
+			resultArea.setText(parser.parse(commandText.getText()));
 		}
 	}
 }

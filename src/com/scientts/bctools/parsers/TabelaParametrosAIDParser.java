@@ -34,6 +34,9 @@ public class TabelaParametrosAIDParser extends AbstractCommandParser {
 		put("6", "Suporta Amex Expresspay EMV Mode");
 	}};
 	
+	public static final String htmlStart = "<html><body>"; 
+	public static final String htmlEnd = "</body></html>";
+	
 	public TabelaParametrosAIDParser(String commandName) {
 		super(commandName);
 	}
@@ -42,64 +45,70 @@ public class TabelaParametrosAIDParser extends AbstractCommandParser {
 	public String parse(String expressionString) {
 		StringBuilder builder = new StringBuilder();
 		
-		builder.append(">>>> Tabela de Parametros x AID <<<<\n");
 		if (expressionString.length() < 284) {
-			builder.append("Entrada Com Tamanho Inválido");	
+			builder.append("<h1>Tabela de Parametros x AID</h1><br/>");
+			builder.append("<h2>Entrada Com Tamanho Inválido</h2><br/>");	
 		}
 		else {
 			Matcher m = paramTablePattern.matcher(expressionString);
 			if (m.matches()) {
-				builder.append("Entrada: ").append(expressionString).append("\n\n");
-				builder.append("Tamanho do registro: [").append(m.group(1)).append("]\n");
-				builder.append("Identificação de Tabela de Parâmetros (Deve ser 1): [").append(m.group(2)).append("]\n");
-				builder.append("Identificador da Rede Adquirente: [").append(m.group(3)).append("] - ").append(redeMap.get(m.group(3))).append("\n");
-				builder.append("Índice do Registro: [").append(m.group(4)).append("]\n");
-				builder.append("Tamanho do AID, em bytes (05 a 16): [").append(m.group(5)).append("]\n");
-				builder.append("AID Application Identifier - Tag 9F06: [").append(m.group(6)).append("]\n");
-				builder.append("Tipo da Aplicação: [").append(m.group(7)).append("] - ").append(m.group(7).equals("01")?"CREDITO" : "DEBITO").append("\n");
-				builder.append("Etiqueta da Aplicação: [").append(m.group(8)).append("]\n");
-				builder.append("Padrão da Aplicação: [").append(m.group(9)).append("] - 03 = EMV\n");
-				builder.append("Application Version Number (Terminal) - opção #1 - Tag 9F09: [").append(m.group(10)).append("]\n");
-				builder.append("Application Version Number (Terminal) - opção #2 - Tag 9F09: [").append(m.group(11)).append("]\n");
-				builder.append("Application Version Number (Terminal) - opção #3 - Tag 9F09: [").append(m.group(12)).append("]\n");
-				builder.append("Terminal Country Code - Tag 9F1A: [").append(m.group(13)).append("]\n");
-				builder.append("Transaction Currency Code - Tag 5F2A: [").append(m.group(14)).append("]\n");
-				builder.append("Transaction Currency Exponent - Tag 5F36: [").append(m.group(15)).append("]\n");
-				builder.append("Merchant Identifier - Tag 9F16: [").append(m.group(16)).append("]\n");
-				builder.append("Merchant Category Code - Tag 9F15: [").append(m.group(17)).append("]\n");
-				builder.append("Terminal Identification - Tag 9F1C: [").append(m.group(18)).append("]\n");
-				builder.append("Terminal Capabilities - Tag 9F33: [").append(m.group(19)).append("]\n");
-				builder.append("Additional Terminal Capabilities - Tag 9F40: [").append(m.group(20)).append("]\n");
-				builder.append("Terminal Type - Tag 9F35: [").append(m.group(21)).append("] - ").append(terminalTypeMap.get(m.group(21))).append("\n");
-				builder.append("Terminal Action Code – Default: [").append(m.group(22)).append("]\n");
-				builder.append("Terminal Action Code – Denial: [").append(m.group(23)).append("]\n");
-				builder.append("Terminal Action Code – Online: [").append(m.group(24)).append("]\n");
-				builder.append("Terminal Floor Limit - Tag 9F1B: [").append(m.group(25)).append("]\n");
-				builder.append("Transaction Category Code- Tag 9F53: [").append(m.group(26)).append("]\n");
-				builder.append("Indica a ação para cartão com chip sem contato se o valor da transação estiver zerado: [").append(m.group(27)).append("] - ").append(m.group(27).equals("0")?"Não Suporta":"Suporta, porém somente Online").append("\n");
-				builder.append("Capacidade de tratamento do terminal para o referido AID, caso este seja localizado em um cartão com chip sem contato: [").append(m.group(28)).append("] - ").append(clessMap.get(m.group(28))).append("\n");
-				builder.append("Terminal/Reader Contactless Transaction Limit: [").append(m.group(29)).append("]\n");
-				builder.append("Terminal/Reader Contactless Floor Limit: [").append(m.group(30)).append("]\n");
-				builder.append("Terminal/Reader CVM Required Limit: [").append(m.group(31)).append("]\n");
-				builder.append("PayPass Mag Stripe Application Version Number (Terminal) - Tag 9F6D: [").append(m.group(32)).append("]\n");
-				builder.append("Indica a forma de seleção da aplicação do cartão sem contato: [").append(m.group(33)).append("] - ").append(m.group(33).equals("0")?"A aplicação é selecionada automaticamente pela prioridade":"A aplicação é selecionada automaticamente pela prioridade").append("\n");
-				builder.append("Default Transaction Certificate Data Object List (TDOL): [").append(m.group(34)).append("]\n");
-				builder.append("Default Dynamic Data Authentication Data Object List (DDOL): [").append(m.group(35)).append("]\n");
-				builder.append("Authorization Response Codes para transações offline: [").append(m.group(36)).append("]\n");
+				builder.append(htmlStart);
+				builder.append("<h1>Tabela de Parametros x AID</h1><br/>");
+				builder.append("<table><tr><th>Descrição</th><th>Valor</th></tr>");
+//				builder.append("<tr><td>Entrada</td>").append("<td>").append(expressionString).append("</td></tr>");
+				builder.append("<tr><td>Tamanho do registro</td>").append("<td>").append(m.group(1)).append("</td></tr>");
+				builder.append("<tr><td>Identificação de Tabela de Parâmetros (Deve ser 1)</td>").append("<td>").append(m.group(2)).append("</td></tr>");
+				builder.append("<tr><td>Identificador da Rede Adquirente</td>").append("<td>").append(m.group(3)).append(" - ").append(redeMap.get(m.group(3))).append("</td></tr>");
+				builder.append("<tr><td>Índice do Registro</td>").append("<td>").append(m.group(4)).append("</td></tr>");
+				builder.append("<tr><td>Tamanho do AID, em bytes (05 a 16)</td>").append("<td>").append(m.group(5)).append("</td></tr>");
+				builder.append("<tr><td>AID Application Identifier - Tag 9F06</td>").append("<td>").append(m.group(6)).append("</td></tr>");
+				builder.append("<tr><td>Tipo da Aplicação</td>").append("<td>").append(m.group(7)).append(" - ").append(m.group(7).equals("01")?"CREDITO" : "DEBITO").append("</td></tr>");
+				builder.append("<tr><td>Etiqueta da Aplicação</td>").append("<td>").append(m.group(8)).append("</td></tr>");
+				builder.append("<tr><td>Padrão da Aplicação</td>").append("<td>").append(m.group(9)).append(" - 03 = EMV</td></tr>");
+				builder.append("<tr><td>Application Version Number (Terminal) - opção #1 - Tag 9F09</td>").append("<td>").append(m.group(10)).append("</td></tr>");
+				builder.append("<tr><td>Application Version Number (Terminal) - opção #2 - Tag 9F09</td>").append("<td>").append(m.group(11)).append("</td></tr>");
+				builder.append("<tr><td>Application Version Number (Terminal) - opção #3 - Tag 9F09</td>").append("<td>").append(m.group(12)).append("</td></tr>");
+				builder.append("<tr><td>Terminal Country Code - Tag 9F1A</td>").append("<td>").append(m.group(13)).append("</td></tr>");
+				builder.append("<tr><td>Transaction Currency Code - Tag 5F2A</td>").append("<td>").append(m.group(14)).append("</td></tr>");
+				builder.append("<tr><td>Transaction Currency Exponent - Tag 5F36</td>").append("<td>").append(m.group(15)).append("</td></tr>");
+				builder.append("<tr><td>Merchant Identifier - Tag 9F16</td>").append("<td>").append(m.group(16)).append("</td></tr>");
+				builder.append("<tr><td>Merchant Category Code - Tag 9F15</td>").append("<td>").append(m.group(17)).append("</td></tr>");
+				builder.append("<tr><td>Terminal Identification - Tag 9F1C</td>").append("<td>").append(m.group(18)).append("</td></tr>");
+				builder.append("<tr><td>Terminal Capabilities - Tag 9F33</td>").append("<td>").append(m.group(19)).append("</td></tr>");
+				builder.append("<tr><td>Additional Terminal Capabilities - Tag 9F40</td>").append("<td>").append(m.group(20)).append("</td></tr>");
+				builder.append("<tr><td>Terminal Type - Tag 9F35</td>").append("<td>").append(m.group(21)).append(" - ").append(terminalTypeMap.get(m.group(21))).append("</td></tr>");
+				builder.append("<tr><td>Terminal Action Code – Default</td>").append("<td>").append(m.group(22)).append("</td></tr>");
+				builder.append("<tr><td>Terminal Action Code – Denial</td>").append("<td>").append(m.group(23)).append("</td></tr>");
+				builder.append("<tr><td>Terminal Action Code – Online</td>").append("<td>").append(m.group(24)).append("</td></tr>");
+				builder.append("<tr><td>Terminal Floor Limit - Tag 9F1B</td>").append("<td>").append(m.group(25)).append("</td></tr>");
+				builder.append("<tr><td>Transaction Category Code- Tag 9F53</td>").append("<td>").append(m.group(26)).append("</td></tr>");
+				builder.append("<tr><td>Indica a ação para cartão com chip sem contato se o valor da transação estiver zerado</td>").append("<td>").append(m.group(27)).append(" - ").append(m.group(27).equals("0")?"Não Suporta":"Suporta, porém somente Online").append("</td></tr>");
+				builder.append("<tr><td>Capacidade de tratamento do terminal para o referido AID, caso este seja localizado em um cartão com chip sem contato</td>").append("<td>").append(m.group(28)).append(" - ").append(clessMap.get(m.group(28))).append("</td></tr>");
+				builder.append("<tr><td>Terminal/Reader Contactless Transaction Limit</td>").append("<td>").append(m.group(29)).append("</td></tr>");
+				builder.append("<tr><td>Terminal/Reader Contactless Floor Limit</td>").append("<td>").append(m.group(30)).append("</td></tr>");
+				builder.append("<tr><td>Terminal/Reader CVM Required Limit</td>").append("<td>").append(m.group(31)).append("</td></tr>");
+				builder.append("<tr><td>PayPass Mag Stripe Application Version Number (Terminal) - Tag 9F6D</td>").append("<td>").append(m.group(32)).append("</td></tr>");
+				builder.append("<tr><td>Indica a forma de seleção da aplicação do cartão sem contato</td>").append("<td>").append(m.group(33)).append(" - ").append(m.group(33).equals("0")?"A aplicação é selecionada automaticamente pela prioridade":"A aplicação é selecionada automaticamente pela prioridade").append("</td></tr>");
+				builder.append("<tr><td>Default Transaction Certificate Data Object List (TDOL)</td>").append("<td>").append(m.group(34)).append("</td></tr>");
+				builder.append("<tr><td>Default Dynamic Data Authentication Data Object List (DDOL)</td>").append("<td>").append(m.group(35)).append("</td></tr>");
+				builder.append("<tr><td>Authorization Response Codes para transações offline</td>").append("<td>").append(m.group(36)).append("</td></tr>");
 				if (expressionString.length() > 284) {
 					Matcher tacM = tacClessPattern.matcher(m.group(37));
 					if (tacM.matches()) {
-						builder.append("Terminal Action Code – Default (para cartões sem contato): [").append(tacM.group(1)).append("]\n");
-						builder.append("Terminal Action Code – Denial (para cartões sem contato): [").append(tacM.group(2)).append("]\n");
-						builder.append("Terminal Action Code – Online (para cartões sem contato): [").append(tacM.group(3)).append("]\n");
+						builder.append("Terminal Action Code – Default (para cartões sem contato)</td>").append("<td>").append(tacM.group(1)).append("</td></tr>");
+						builder.append("Terminal Action Code – Denial (para cartões sem contato)</td>").append("<td>").append(tacM.group(2)).append("</td></tr>");
+						builder.append("Terminal Action Code – Online (para cartões sem contato)</td>").append("<td>").append(tacM.group(3)).append("</td></tr>");
 					}
 				}
+				builder.append(htmlEnd);
 			}
 			else {
-				builder.append("Entrada No Formato Inválido");
+				builder.append("<h1>Tabela de Parametros x AID</h1><br/>");
+				builder.append("<h2>Entrada No Formato Inválido<h2><br/>");
 			}
 		}
 
+		System.out.println(builder.toString());
 		return builder.toString();
 	}
 
