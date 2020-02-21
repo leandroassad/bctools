@@ -20,39 +20,35 @@ public class TabelaCertificadosParser extends AbstractCommandParser {
 	}
 
 	@Override
-	public String parse(String expressionString) {
+	public void parseExpression(String expressionString) {
 		StringBuilder builder = new StringBuilder();		
 
-		builder.append(">>>> Tabela de Certificados <<<<\n");
 		if (expressionString.length() < 611) {
-			builder.append("Entrada Com Tamanho Inválido");	
+			appendString("<h2>Entrada Com Tamanho Inválido</h2>");	
 		}
 		else {
 			Matcher m = certTablePattern.matcher(expressionString);
 			if (m.matches()) {
-				builder.append("Entrada: ").append(expressionString).append("\n\n");
-				builder.append("Tamanho do registro: [").append(m.group(1)).append("]\n");
-				builder.append("Identificação da Tabela de Chaves Públicas (fixo 2): [").append(m.group(2)).append("]\n");
-				builder.append("Identificador da rede adquirente: [").append(m.group(1)).append("] - ").append(redeMap.get(m.group(3))).append("\n");
-				builder.append("Índice do registro na tabela: [").append(m.group(4)).append("]\n");
-				builder.append("RID - Registered Application Provider Identifier: [").append(m.group(5)).append("]\n");
-				builder.append("Certification Authority Public Key Index: [").append(m.group(6)).append("]\n");
-				builder.append("Reservado para uso futuro - preenchido com zeros (00): [").append(m.group(7)).append("]\n");
-				builder.append("Tamanho em bytes do Certification Authority Public Key Exponent (1 ou 3): [").append(m.group(8)).append("]\n");
-				builder.append("Certification Authority Public Key Exponent (alinhado à esquerda): [").append(m.group(9)).append("]\n");
-				builder.append("Tamanho em bytes do Certification Authority Public Key Modulus (até 248): [").append(m.group(10)).append("]\n");
-				builder.append("Certification Authority Public Key Modulus (alinhado à esquerda): [").append(m.group(11)).append("]\n");
-				builder.append("Status do Check Sum (Hash SHA-1): [").append(m.group(12)).append("] - ").append(m.group(12).charAt(0) == '0' ? "Não utilizado" : "Presente").append("\n");
-				builder.append("Certification Authority Public Key Check Sum (Hash SHA-1): [").append(m.group(13)).append("]\n");
-				builder.append("Reservado para uso futuro - preencher com zeros: [").append(m.group(14)).append("]\n");
+				appendString("Entrada: ").append(expressionString).append("\n\n");
+				appendString("Tamanho do registro: [").append(m.group(1)).append("]\n");
+				appendString("Identificação da Tabela de Chaves Públicas (fixo 2): [").append(m.group(2)).append("]\n");
+				appendString("Identificador da rede adquirente: [").append(m.group(1)).append("] - ").append(redeMap.get(m.group(3))).append("\n");
+				appendString("Índice do registro na tabela: [").append(m.group(4)).append("]\n");
+				appendString("RID - Registered Application Provider Identifier: [").append(m.group(5)).append("]\n");
+				appendString("Certification Authority Public Key Index: [").append(m.group(6)).append("]\n");
+				appendString("Reservado para uso futuro - preenchido com zeros (00): [").append(m.group(7)).append("]\n");
+				appendString("Tamanho em bytes do Certification Authority Public Key Exponent (1 ou 3): [").append(m.group(8)).append("]\n");
+				appendString("Certification Authority Public Key Exponent (alinhado à esquerda): [").append(m.group(9)).append("]\n");
+				appendString("Tamanho em bytes do Certification Authority Public Key Modulus (até 248): [").append(m.group(10)).append("]\n");
+				appendString("Certification Authority Public Key Modulus (alinhado à esquerda): [").append(m.group(11)).append("]\n");
+				appendString("Status do Check Sum (Hash SHA-1): [").append(m.group(12)).append("] - ").append(m.group(12).charAt(0) == '0' ? "Não utilizado" : "Presente").append("\n");
+				appendString("Certification Authority Public Key Check Sum (Hash SHA-1): [").append(m.group(13)).append("]\n");
+				appendString("Reservado para uso futuro - preencher com zeros: [").append(m.group(14)).append("]\n");
 			}
 			else {
-				builder.append("Entrada No Formato Inválido");
+				appendString("<h2>Entrada No Formato Inválido</h2>");
 			}
-		}
-		
-		return builder.toString();
-
+		}		
 	}
 
 }
