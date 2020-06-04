@@ -31,7 +31,7 @@ import com.scientts.bctools.parsers.TabelaParametrosAIDParser;
 @SuppressWarnings("serial")
 public class BCTools extends JFrame {
 
-	public static final String BCTOOLS_VERSION = "1.0.3";
+	public static final String BCTOOLS_VERSION = "1.0.4";
 	
 	JTextArea resultArea;
 	JTextField commandText;
