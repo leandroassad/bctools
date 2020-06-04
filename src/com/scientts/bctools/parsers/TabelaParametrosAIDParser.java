@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TabelaParametrosAIDParser extends AbstractCommandParser {
-	public static final Pattern paramTablePattern = Pattern.compile("(\\d{3})(\\d)(\\d{2})(\\d{2})(\\d{2})([\\w\\s]{32})(\\d{2})([\\w\\s]{16})(\\d{2})(\\w{4})(\\w{4})(\\w{4})(\\d{3})(\\d{3})(\\d)([\\w\\s]{15})(\\d{4})([\\w\\s]{8})(\\w{6})(\\w{10})(\\d{2})(\\w{10})(\\w{10})(\\w{10})(\\w{8})(\\w)(\\w)(\\d)(\\w{8})(\\w{8})(\\w{8})(\\w{4})(\\d)(\\w{40})(\\w{40})(\\w{8})(.*)");
+	public static final Pattern paramTablePattern = Pattern.compile("(\\d{3})(\\d)(\\d{2})(\\d{2})(\\d{2})([\\w\\s]{32})(\\d{2})([\\w\\s]{16})(\\d{2})(\\w{4})(\\w{4})(\\w{4})(\\d{3})(\\d{3})(\\d)([\\w\\s]{15})(\\d{4})([\\w\\s]{8})(\\w{6})(\\w{10})(\\d{2})(\\w{10})(\\w{10})(\\w{10})(\\w{8})([\\w\\s])([\\w\\s])([\\w\\s])([\\w\\s]{8})([\\w\\s]{8})([\\w\\s]{8})([\\w\\s]{4})([\\w\\s])([\\w\\s]{40})([\\w\\s]{40})([\\w\\s]{8})(.*)");
 	public static final Pattern tacClessPattern = Pattern.compile("(\\w{10})(\\w{10})(\\w{10})");
 
 	protected Map<String, String> redeMap = new HashMap<String, String>() {{
