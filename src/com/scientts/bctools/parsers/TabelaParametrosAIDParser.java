@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 public class TabelaParametrosAIDParser extends AbstractCommandParser {
 	public static final Pattern paramTablePattern = Pattern.compile("(\\d{3})(\\d)(\\d{2})(\\d{2})(\\d{2})([\\w\\s]{32})(\\d{2})([\\w\\s]{16})(\\d{2})(\\w{4})(\\w{4})(\\w{4})(\\d{3})(\\d{3})(\\d)([\\w\\s]{15})(\\d{4})([\\w\\s]{8})(\\w{6})(\\w{10})(\\d{2})(\\w{10})(\\w{10})(\\w{10})(\\w{8})([\\w\\s])([\\w\\s])([\\w\\s])([\\w\\s]{8})([\\w\\s]{8})([\\w\\s]{8})([\\w\\s]{4})([\\w\\s])([\\w\\s]{40})([\\w\\s]{40})([\\w\\s]{8})(.*)");
 	public static final Pattern tacClessPattern = Pattern.compile("(\\w{10})(\\w{10})(\\w{10})");
+	public static final Pattern tacClessAbecsPattern = Pattern.compile("(\\w{10})(\\w{10})(\\w{10})(\\w{6})(\\d)(\\w{10})(\\w{8})(\\d)");
 
 	protected Map<String, String> redeMap = new HashMap<String, String>() {{
 		put("01", "Rede Amex");
@@ -86,13 +87,28 @@ public class TabelaParametrosAIDParser extends AbstractCommandParser {
 				builder.append("Default Transaction Certificate Data Object List (TDOL): [").append(m.group(34)).append("]\n");
 				builder.append("Default Dynamic Data Authentication Data Object List (DDOL): [").append(m.group(35)).append("]\n");
 				builder.append("Authorization Response Codes para transações offline: [").append(m.group(36)).append("]\n");
-				if (expressionString.length() > 284) {
+				if (expressionString.length() > 284 && expressionString.length() < 340) {
 					Matcher tacM = tacClessPattern.matcher(m.group(37));
 					if (tacM.matches()) {
-						builder.append("Terminal Action Code – Default (para cartões sem contato): [").append(tacM.group(1)).append("]\n");
-						builder.append("Terminal Action Code – Denial (para cartões sem contato): [").append(tacM.group(2)).append("]\n");
-						builder.append("Terminal Action Code – Online (para cartões sem contato): [").append(tacM.group(3)).append("]\n");
+						builder.append("**** Dados adicionais para cartões sem contato ****\n");
+						builder.append("Terminal Action Code – Default: [").append(tacM.group(1)).append("]\n");
+						builder.append("Terminal Action Code – Denial: [").append(tacM.group(2)).append("]\n");
+						builder.append("Terminal Action Code – Online: [").append(tacM.group(3)).append("]\n");
 					}
+				}
+				else if (expressionString.length() == 340) {
+					Matcher tacM = tacClessAbecsPattern.matcher(m.group(37));
+					if (tacM.matches()) {
+						builder.append("**** Dados adicionais para terminais sem contato ****\n");
+						builder.append("Terminal Action Code – Default: [").append(tacM.group(1)).append("]\n");
+						builder.append("Terminal Action Code – Denial: [").append(tacM.group(2)).append("]\n");
+						builder.append("Terminal Action Code – Online: [").append(tacM.group(3)).append("]\n");
+						builder.append("Terminal Capabilities: [").append(tacM.group(4)).append("]\n");
+						builder.append("Suporte à verificação do portador (CDCVM): [").append(tacM.group(5)).append("]\n");
+						builder.append("Additional Terminal Capabilities: [").append(tacM.group(6)).append("]\n");
+						builder.append("Terminal/Reader cless transaction limit: [").append(tacM.group(7)).append("]\n");
+						builder.append("Suporte ao processamento de Issuer Scripts: [").append(tacM.group(8)).append("]\n");
+					}					
 				}
 			}
 			else {
